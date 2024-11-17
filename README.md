@@ -1,5 +1,5 @@
 # Extractive Summarization:
-###### Yake!:
+## Yake!:
 1) download Yake
 ```
 pip install yake
@@ -8,7 +8,7 @@ pip install yake
 ```
 import yake
 ```
-###### TextRank:
+## TextRank:
 >gensim最新版本已不支援gensim.summarization，因此會無法使用，所以改使用summa
 1) download summa
 ```
