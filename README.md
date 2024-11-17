@@ -4,7 +4,7 @@
 ```
 pip install yake
 ```
-2)import
+2) import
 ```
 import yake
 ```
@@ -14,7 +14,7 @@ import yake
 ```
 pip install summa
 ```
-2)import
+2) import
 ```
 from summa import keywords
 ```
