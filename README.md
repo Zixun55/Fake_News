@@ -1,5 +1,9 @@
-# Extractive Summarization:
-## Yake!:
+# 新版(RAG版)
+>新版的檔案儲存於RAG資料夾中
+
+# 舊版(mBert版)
+## Extractive Summarization:
+### Yake!:
 1) download Yake
 ```
 pip install yake
