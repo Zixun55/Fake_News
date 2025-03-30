@@ -3,15 +3,15 @@ from bs4 import BeautifulSoup
 import re
 import pandas as pd
 
-base_url = 'https://www.snopes.com/fact-check/rating/mixture/?pagenum={}'
+base_url = 'https://www.snopes.com/fact-check/rating/mostly-true/?pagenum={}'
 
-# true: 173
-# false: 358
+# true: 175
+# false: 359
 # mostly-true: 25
 # mostly-false: 37
 # mixture: 85(半對半錯)
 start_page = 1
-end_page = 85
+end_page = 25
 
 all_article_links = []
 
@@ -46,7 +46,7 @@ for article_url in all_article_links:
     source_section = article_soup.find('div', id='sources_rows')
     if source_section:
         paragraphs = source_section.find_all('p')
-        source_texts = [" ".join(p.stripped_strings) for p in paragraphs if p.get_text(strip=True)]
+        source_texts = [" ".join(p.get_text(separator=" ", strip=True).split()) for p in paragraphs if p.get_text(strip=True)]
         if source_texts:
             source = " | ".join(source_texts)
         else:
@@ -58,18 +58,26 @@ for article_url in all_article_links:
     if explanation_section:
         paragraphs = explanation_section.find_all('p')
         if len(paragraphs) > 1:
-            explanation = " | ".join([re.sub(r'\s+', ' ', p.get_text()).strip() for p in paragraphs[1:]])  # 跳過第一個 <p>
+            explanation = " ".join([re.sub(r'\s+', ' ', p.get_text()).strip() for p in paragraphs[1:]])  # 跳過第一個 <p>
         else:
             explanation = 'No Explanation available'
     else:
         explanation = 'No Explanation available'
+
+    tags_section = article_soup.find('div', class_='tag_wrapper')
+    if tags_section:
+        tags = [tag.get_text(strip=True) for tag in tags_section.find_all('a', class_='tag_button')]
+        tags_text = ", ".join(tags)
+    else:
+        tags_text = "No Tag available"
 
     data.append({
         'Date': date,
         'Claim': claim,
         'Explanation': explanation,
         'Source': source,
-        'Classification': classification
+        'Classification': classification,
+        'Tag': tags_text
     })
 
 df = pd.DataFrame(data)
@@ -80,5 +88,5 @@ df['Date'] = df['Date'].apply(
     lambda x: re.sub(r'^Published\s+', '', x).strip() if x.startswith('Published ') else x
 )
 
-csv_filename = 'snopes_mixture.csv'
+csv_filename = 'knowledge_base/original_data/snopes_mostly_true2.csv'
 df.to_csv(csv_filename, index=False, encoding='utf-8')
