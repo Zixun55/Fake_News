@@ -45,3 +45,33 @@ import pandas as pd
 df = pd.read_csv('./knowledge_base/clean_data/politifact_all_original.csv')
 df = df.drop(columns=['Post', 'Source'])
 df.to_csv('./knowledge_base/clean_data/politifact_all.csv', index=False)
+
+#%%
+# Split 'Claim' and 'Explanation' for retriever
+import pandas as pd
+df = pd.read_csv('./knowledge_base/clean_data/politifact_all.csv')
+df = df.drop(columns=['Date', 'Classification'])
+
+df_claim = df[['Claim']]  
+df_explanation = df[['Explanation']]
+df_claim_explanation = df[['Claim', 'Explanation']]  
+
+df_claim.to_csv('./retriever/politifact_all_claim.csv', index=False)  
+df_explanation.to_csv('./retriever/politifact_all_explanation.csv', index=False)  
+df_claim_explanation.to_csv('./retriever/politifact_all_claim_explanation.csv', index=False)
+# %%
+import pandas as pd
+
+df = pd.read_csv('./classification_fake6000.csv')
+classification = df['Classification'].unique()
+
+true = (df['Classification'] == True).sum()
+false = (df['Classification'] == False).sum()
+nan_count = df['Classification'].isna().sum()
+
+print(classification, '\n')
+print('TRUE: ', true)
+print('FALSE: ', false)
+print('NaN:', nan_count)
+
+# %%
