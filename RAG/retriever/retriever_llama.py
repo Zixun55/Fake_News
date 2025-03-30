@@ -9,7 +9,7 @@ vector = FAISS.load_local(
     allow_dangerous_deserialization=True
 )
 
-query = 'Kelly Ayotte 、abortion 、Planned Parenthood 、Neil Gorsuch 、Roe v. Wade'
+query = "What is Kelly Ayotte's stance on abortion and reproductive rights?"
 
 query_vector = embedding.embed_query(query)
 
